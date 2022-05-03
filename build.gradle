@@ -1,6 +1,7 @@
 
 // 빌드 스크립트 구성
 buildscript {
+    // 엑스트라 줄임말
     ext {
         spring = "2.4.1"
         boot = "org.springframework.boot"
@@ -9,16 +10,17 @@ buildscript {
     repositories {
         mavenCentral()
     }
+
     dependencies {
+        // 그래들로 빌드할 것이여서
         classpath("$boot:spring-boot-gradle-plugin:$spring")
     }
 
 }
 
-
-
 // 공통 프로젝트 의존성을 여기서 구성할 수 있습니다.
 allprojects {
+    // 공통으로 쓰게될 공통아이디와 버전
     group = "com.sp.fc"
     version = "1.0.0"
 
@@ -45,7 +47,7 @@ subprojects {
     }
 
     dependencies {
-        developmentOnly("$boot:spring-boot-devtools")
+        // developmentOnly("$boot:spring-boot-devtools")
         implementation "$boot:spring-boot-starter-security"
         implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
@@ -62,6 +64,28 @@ subprojects {
     }
 
 }
+
+["comp", "web"].each {
+    def subProjectDir = new File(projectDir, it)
+    subProjectDir.eachDir {dir->
+        def projectName = ":${it}-${dir.name}"
+        project(projectName){
+            bootJar.enabled(false)
+            jar.enabled(true)
+        }
+    }
+}
+["server"].each {
+    def subProjectDir = new File(projectDir, it)
+    subProjectDir.eachDir {dir->
+        def projectName = ":${it}-${dir.name}"
+        project(projectName){
+
+        }
+    }
+}
+
+help.enabled(false)
 
 
 
