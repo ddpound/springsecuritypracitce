@@ -1,0 +1,67 @@
+
+// 빌드 스크립트 구성
+buildscript {
+    ext {
+        spring = "2.4.1"
+        boot = "org.springframework.boot"
+        lombok = "org.projectlombok:lombok"
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("$boot:spring-boot-gradle-plugin:$spring")
+    }
+
+}
+
+
+
+// 공통 프로젝트 의존성을 여기서 구성할 수 있습니다.
+allprojects {
+    group = "com.sp.fc"
+    version = "1.0.0"
+
+}
+
+
+
+// 각각의 하위 프로젝트의 의존성을 구성할수 있습니다.
+subprojects {
+    apply plugin: "java"
+    apply plugin: boot
+    apply plugin: "io.spring.dependency-management"
+    apply plugin: "idea"
+
+    repositories {
+        mavenCentral()
+    }
+
+    configurations {
+        developmentOnly
+        runtimeClasspath {
+            extendsFrom developmentOnly
+        }
+    }
+
+    dependencies {
+        developmentOnly("$boot:spring-boot-devtools")
+        implementation "$boot:spring-boot-starter-security"
+        implementation 'com.fasterxml.jackson.core:jackson-annotations'
+
+        compileOnly lombok
+        testCompileOnly lombok
+        annotationProcessor lombok
+        testAnnotationProcessor lombok
+
+        testImplementation "$boot:spring-boot-starter-test"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+}
+
+
+
