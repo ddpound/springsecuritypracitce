@@ -57,6 +57,12 @@ subprojects {
         testAnnotationProcessor lombok
 
         testImplementation "$boot:spring-boot-starter-test"
+
+        // 각각 다른 곳에서 구현한 jwt 입니다.
+        implementation("com.auth0:java-jwt:3.16.0") //  oauth0
+        implementation("io.jsonwebtoken:jjwt:0.9.1") // okta
+
+
     }
 
     test {
